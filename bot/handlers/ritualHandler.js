@@ -1,15 +1,32 @@
 // bot/handlers/ritualHandler.js
 
-const { ritualCatalog } = require('../../data/ritualCatalog')
-const { awardTrophy } = require('../../services/trophies/trophyService')
+const {
+  generateRitualForUser,
+} = require('../../services/ai/shadowPersonaEngine')
 
 async function handleRitual(bot, msg) {
-  const randomRitual =
-    ritualCatalog[Math.floor(Math.random() * ritualCatalog.length)]
+  const chatId = msg.chat.id
 
-  bot.sendMessage(msg.chat.id, `Your Ritual:\n\n${randomRitual.description}`)
+  try {
+    const ritualText = await generateRitualForUser(chatId.toString())
 
-  // Optional: automatically track that a ritual was assigned, or wait for user confirmation before awarding
+    if (!ritualText) {
+      bot.sendMessage(chatId, 'Your Shadow is silent. No ritual was generated.')
+      return
+    }
+
+    // Send ritual with reply keyboard
+    await bot.sendMessage(chatId, `Your Ritual:\n\n${ritualText}`, {
+      reply_markup: {
+        keyboard: [[{ text: 'OBEY' }, { text: 'NEGOTIATE' }, { text: 'DEFY' }]],
+        one_time_keyboard: true,
+        resize_keyboard: true,
+      },
+    })
+  } catch (error) {
+    console.error('Error generating ritual:', error)
+    bot.sendMessage(chatId, 'An error occurred while summoning your ritual.')
+  }
 }
 
 module.exports = {
