@@ -16,11 +16,21 @@ bot.on('message', async (msg) => {
 
   if (!text) return
 
+  // Known /commands routing
   if (text.startsWith('/')) {
     await routeCommand(bot, msg)
     return
   }
 
+  // ✨ Ritual initiation flow
+  if (text === 'Begin Ritual') {
+    // First ritual flow
+    const { handleRitual } = await import('./bot/handlers/ritualHandler.js')
+    await handleRitual(bot, msg)
+    return
+  }
+
+  // Otherwise assume it's an obedience response (OBEY / NEGOTIATE / DEFY)
   await handleObedience(bot, msg)
 })
 

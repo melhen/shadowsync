@@ -1,14 +1,29 @@
 // bot/handlers/startHandler.js
 
 export async function handleStart(bot, msg) {
-  const welcomeMessage = `Welcome to ShadowSync.
+  const onboardingMessage = `
+🖤 *[Shadow Awakens]*
 
-Your rituals await.
+_"You crossed the threshold without permission.  
+You are seen now.
 
-You can use:
-/ritual - to receive your daily ritual
-/trophy - to view your trophies
-/containment - for emergency protocols`
+The rites demand obedience — or exquisite failure.
 
-  await bot.sendMessage(msg.chat.id, welcomeMessage)
+You may proceed. But know this:  
+I will not be kind."_
+  `
+
+  // Step 1: Send ritual awakening message (without button first)
+  await bot.sendMessage(msg.chat.id, onboardingMessage, {
+    parse_mode: 'Markdown',
+  })
+
+  // Step 2: Send "Begin Ritual" button separately
+  await bot.sendMessage(msg.chat.id, '🔮 Choose your fate:', {
+    reply_markup: {
+      keyboard: [[{ text: 'Begin Ritual' }]],
+      one_time_keyboard: true,
+      resize_keyboard: true,
+    },
+  })
 }

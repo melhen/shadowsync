@@ -39,6 +39,9 @@ export async function updateShadowCompliance(userId, choice) {
     }
   }
 
+  // ✨ Add escalation level AFTER calculating compliance
+  data.escalationLevel = evaluateEscalationLevel(data)
+
   await shadowRef.set(data, { merge: true })
 
   return data
@@ -54,4 +57,22 @@ export async function getCurrentRitualId(userId) {
 
   const data = shadowDoc.data()
   return data.currentRitualId || null
+}
+
+export function evaluateEscalationLevel(shadowState) {
+  const {
+    complianceStreak = 0,
+    resistanceStreak = 0,
+    lastResponse = '',
+  } = shadowState
+
+  if (complianceStreak >= 3) {
+    return 'obedience'
+  } else if (resistanceStreak >= 2) {
+    return 'defiance'
+  } else if (lastResponse === 'NEGOTIATE') {
+    return 'negotiation'
+  } else {
+    return 'neutral'
+  }
 }

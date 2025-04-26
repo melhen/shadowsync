@@ -17,13 +17,16 @@ export async function generateRitualForUser(userId) {
     shadowRef.get(),
     userRef.get(),
   ])
+
   const shadow = shadowSnap.data() || {}
   const user = userSnap.data() || {}
   const trophies = trophiesSnap.docs.map((doc) => doc.id)
 
+  // 🧠 Choose Shadow Archetype
   const archetypeId = user.shadowPersonaId || 'Null'
   const persona = SHADOW_ARCHETYPES[archetypeId]
 
+  // 💡 Style flavoring (small variations in wording)
   const styleOptions = [
     'ritualistic',
     'poetic',
@@ -34,13 +37,19 @@ export async function generateRitualForUser(userId) {
   const promptStyle =
     styleOptions[Math.floor(Math.random() * styleOptions.length)]
 
-  const tone =
-    shadow.complianceStreak >= 3
-      ? 'obedient and ready'
-      : shadow.resistanceStreak >= 3
-        ? 'defiant and dissonant'
-        : 'awaiting alignment'
+  // 🎭 Escalation Tone Injection
+  const escalationToneHints = {
+    obedience: 'seductive, approving, lightly dominant',
+    defiance: 'cold, cruel, humiliating',
+    negotiation: 'mocking, baiting, playful cruelty',
+    neutral: 'neutral ritualistic tone',
+  }
 
+  const escalationLevel = shadow.escalationLevel || 'neutral'
+  const escalationTone =
+    escalationToneHints[escalationLevel] || escalationToneHints['neutral']
+
+  // 🧾 Build the Prompt for OpenAI
   const prompt = `
 User profile:
 - Name: ${user.firstName || 'User'}
@@ -50,9 +59,9 @@ User profile:
 - Last response: ${shadow.lastResponse || 'NONE'}
 
 Write a ${promptStyle} ritual task in the voice of ${persona.name}.
-Tone should be ${persona.tone}.
+Tone should be ${persona.tone}, but modulated with the following bias: ${escalationTone}.
 No more than 10 sentences.
-The task should be realistic, sensory, with a bit of unhinged humour.
+The task should be realistic, sensory, and emotionally provocative with a touch of unhinged humour.
 
 End with: "_Reply with OBEY, NEGOTIATE, or DEFY._"
 `
