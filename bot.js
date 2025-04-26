@@ -6,6 +6,7 @@ dotenv.config()
 import TelegramBot from 'node-telegram-bot-api'
 import { routeCommand } from './bot/commandRouter.js'
 import { handleObedience } from './bot/handlers/obedienceHandler.js'
+import { systemMessages } from './services/utils/contentLoader.js'
 
 // Create the Telegram bot instance
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true })
@@ -24,7 +25,6 @@ bot.on('message', async (msg) => {
 
   // ✨ Ritual initiation flow
   if (text === 'Begin Ritual') {
-    // First ritual flow
     const { handleRitual } = await import('./bot/handlers/ritualHandler.js')
     await handleRitual(bot, msg)
     return

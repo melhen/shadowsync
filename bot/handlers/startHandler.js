@@ -1,25 +1,15 @@
 // bot/handlers/startHandler.js
 
+import { systemMessages } from '../../services/utils/contentLoader.js'
+
 export async function handleStart(bot, msg) {
-  const onboardingMessage = `
-🖤 *[Shadow Awakens]*
+  const onboardingMessage = systemMessages.onboarding.awakening
+  const chooseFatePrompt = systemMessages.chooseFate.prompt
 
-_"You crossed the threshold without permission.  
-You are seen now.
-
-The rites demand obedience — or exquisite failure.
-
-You may proceed. But know this:  
-I will not be kind."_
-  `
-
-  // Step 1: Send ritual awakening message (without button first)
   await bot.sendMessage(msg.chat.id, onboardingMessage, {
     parse_mode: 'Markdown',
   })
-
-  // Step 2: Send "Begin Ritual" button separately
-  await bot.sendMessage(msg.chat.id, '🔮 Choose your fate:', {
+  await bot.sendMessage(msg.chat.id, chooseFatePrompt, {
     reply_markup: {
       keyboard: [[{ text: 'Begin Ritual' }]],
       one_time_keyboard: true,

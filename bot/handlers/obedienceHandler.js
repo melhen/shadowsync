@@ -6,6 +6,7 @@ import {
   getCurrentRitualId,
 } from '../../services/shadow/shadowService.js'
 import { evaluateTrophies } from '../../services/trophies/trophyService.js'
+import { systemMessages } from '../../services/utils/contentLoader.js' // assuming you export loaded systemMessages
 
 export async function handleObedience(bot, msg) {
   const choice = msg.text.toUpperCase()
@@ -36,15 +37,19 @@ export async function handleObedience(bot, msg) {
   )
 
   // 4. Evaluate trophies
-  const trophies = await evaluateTrophies(userId, shadowState)
+  const trophies = await evaluateTrophies(userId, shadowState, choice)
 
   if (trophies.length > 0) {
+    const trophyTemplate = systemMessages.trophyUnlocked.template
+
     for (const trophy of trophies) {
-      await bot.sendMessage(
-        msg.chat.id,
-        `🏆 *Trophy Unlocked: ${trophy.title}*\n\nYour Shadow has marked you.`,
-        { parse_mode: 'Markdown' },
-      )
+      const trophyMessage = trophyTemplate
+        .replace('{{title}}', trophy.title)
+        .replace('{{description}}', trophy.description)
+
+      await bot.sendMessage(msg.chat.id, trophyMessage, {
+        parse_mode: 'Markdown',
+      })
     }
   }
 }

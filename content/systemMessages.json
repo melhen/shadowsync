@@ -1,0 +1,18 @@
+{
+  "onboarding": {
+    "awakening": "🖤 *[Shadow Awakens]*\n\n_\"You crossed the threshold without permission. You are seen now.\n\nThe rites demand obedience — or exquisite failure.\n\nYou may proceed. But know this: I will not be kind.\"_"
+  },
+  "chooseFate": {
+    "prompt": "🔮 Choose your fate:"
+  },
+  "trophyUnlocked": {
+    "template": "🏆 *Trophy Unlocked: {{title}}*\n\n_{{description}}_"
+  },
+  "upgradeTeaser": {
+    "message": "You have proven yourself... but greater powers still mock you.\n\nUnlock the Chaos Brat if you dare."
+  },
+  "errors": {
+    "silentShadow": "⚠️ Shadow is silent. Something interfered with the ritual.",
+    "notWorthy": "⛔ You are not yet worthy of this ritual.\n\nReturn when your obedience is proven."
+  }
+}
