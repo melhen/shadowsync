@@ -1,15 +1,15 @@
 // bot/handlers/trophyHandler.js
 
-const { getUserTrophies } = require('../../services/trophies/trophyService')
+import { getUserTrophies } from '../../services/trophies/trophyService.js'
 
-async function handleTrophy(bot, msg) {
+export async function handleTrophy(bot, msg) {
   const chatId = msg.chat.id
 
   try {
-    const trophies = await getUserTrophies(chatId)
+    const trophies = await getUserTrophies(chatId.toString())
 
     if (!trophies.length) {
-      bot.sendMessage(
+      await bot.sendMessage(
         chatId,
         "You haven't earned any trophies yet. Complete rituals to unlock them!",
       )
@@ -20,13 +20,9 @@ async function handleTrophy(bot, msg) {
       .map((trophy) => `🏆 ${trophy.name}: ${trophy.description}`)
       .join('\n\n')
 
-    bot.sendMessage(chatId, `Your Trophies:\n\n${trophyList}`)
+    await bot.sendMessage(chatId, `Your Trophies:\n\n${trophyList}`)
   } catch (error) {
     console.error('Error fetching trophies:', error)
-    bot.sendMessage(chatId, 'Unable to fetch your trophies right now.')
+    await bot.sendMessage(chatId, 'Unable to fetch your trophies right now.')
   }
-}
-
-module.exports = {
-  handleTrophy,
 }

@@ -1,6 +1,6 @@
 // bot/handlers/startHandler.js
 
-function handleStart(bot, msg) {
+export async function handleStart(bot, msg) {
   const welcomeMessage = `Welcome to ShadowSync.
 
 Your rituals await.
@@ -10,9 +10,5 @@ You can use:
 /trophy - to view your trophies
 /containment - for emergency protocols`
 
-  bot.sendMessage(msg.chat.id, welcomeMessage)
-}
-
-module.exports = {
-  handleStart,
+  await bot.sendMessage(msg.chat.id, welcomeMessage)
 }

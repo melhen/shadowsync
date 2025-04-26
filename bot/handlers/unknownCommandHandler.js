@@ -1,12 +1,8 @@
 // bot/handlers/unknownCommandHandler.js
 
-function handleUnknownCommand(bot, msg) {
-  bot.sendMessage(
+export async function handleUnknownCommand(bot, msg) {
+  await bot.sendMessage(
     msg.chat.id,
-    'Unknown command. Type /help for available options.',
+    'Unknown command. Type /start to see available options.',
   )
-}
-
-module.exports = {
-  handleUnknownCommand,
 }

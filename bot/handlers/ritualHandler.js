@@ -1,19 +1,25 @@
 // bot/handlers/ritualHandler.js
 
-const {
-  generateRitualForUser,
-} = require('../../services/ai/shadowPersonaEngine')
+import { generateRitualForUser } from '../../services/ai/shadowPersonaEngine.js'
+import { setCurrentRitualId } from '../../services/shadow/shadowService.js'
 
-async function handleRitual(bot, msg) {
+export async function handleRitual(bot, msg) {
   const chatId = msg.chat.id
 
   try {
     const ritualText = await generateRitualForUser(chatId.toString())
 
     if (!ritualText) {
-      bot.sendMessage(chatId, 'Your Shadow is silent. No ritual was generated.')
+      await bot.sendMessage(
+        chatId,
+        'Your Shadow is silent. No ritual was generated.',
+      )
       return
     }
+
+    // Generate ritualId dynamically
+    const ritualId = `ritual_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+    await setCurrentRitualId(chatId.toString(), ritualId)
 
     // Send ritual with reply keyboard
     await bot.sendMessage(chatId, `Your Ritual:\n\n${ritualText}`, {
@@ -25,10 +31,9 @@ async function handleRitual(bot, msg) {
     })
   } catch (error) {
     console.error('Error generating ritual:', error)
-    bot.sendMessage(chatId, 'An error occurred while summoning your ritual.')
+    await bot.sendMessage(
+      chatId,
+      'An error occurred while summoning your ritual.',
+    )
   }
-}
-
-module.exports = {
-  handleRitual,
 }

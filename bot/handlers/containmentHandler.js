@@ -1,15 +1,12 @@
 // bot/handlers/containmentHandler.js
 
-const {
-  getContainmentProtocol,
-} = require('../../services/ritual/containmentProtocols')
+import { getContainmentProtocol } from '../../services/ritual/containmentProtocols.js'
 
-function handleContainment(bot, msg) {
+export async function handleContainment(bot, msg) {
   const protocol = getContainmentProtocol()
 
-  bot.sendMessage(msg.chat.id, `Containment Protocol Activated:\n\n${protocol}`)
-}
-
-module.exports = {
-  handleContainment,
+  await bot.sendMessage(
+    msg.chat.id,
+    `Containment Protocol Activated:\n\n${protocol}`,
+  )
 }

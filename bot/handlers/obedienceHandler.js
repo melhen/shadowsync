@@ -1,17 +1,13 @@
-// bot/handlers/obedienceHandler.cjs
+// bot/handlers/obedienceHandler.js
 
-const {
-  logRitualResponse,
-} = require('../../services/ritual/responseService.js')
-const {
+import { logRitualResponse } from '../../services/ritual/responseService.js'
+import {
   updateShadowCompliance,
-} = require('../../services/shadow/shadowService.js')
-const { evaluateTrophies } = require('../../services/trophies/trophyService.js')
+  getCurrentRitualId,
+} from '../../services/shadow/shadowService.js'
+import { evaluateTrophies } from '../../services/trophies/trophyService.js'
 
-/**
- * Handles OBEY, NEGOTIATE, DEFY responses
- */
-async function handleObedience(bot, msg) {
+export async function handleObedience(bot, msg) {
   const choice = msg.text.toUpperCase()
   const userId = msg.from.id.toString()
 
@@ -19,9 +15,12 @@ async function handleObedience(bot, msg) {
 
   console.log(`User ${userId} chose ${choice}`)
 
-  // 1. Log the response
+  // Fetch the current ritual ID
+  const ritualId = await getCurrentRitualId(userId)
+
+  // 1. Log the response (correct ritual ID)
   await logRitualResponse(userId, {
-    ritualId: 'test-init', // NOTE: We'll make this dynamic later
+    ritualId: ritualId || 'unknown',
     status: choice,
     timestamp: new Date().toISOString(),
   })
@@ -48,8 +47,4 @@ async function handleObedience(bot, msg) {
       )
     }
   }
-}
-
-module.exports = {
-  handleObedience,
 }

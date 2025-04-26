@@ -1,9 +1,11 @@
 // bot.js
 
-require('dotenv').config()
-const TelegramBot = require('node-telegram-bot-api')
-const { routeCommand } = require('./bot/commandRouter')
-const { handleObedience } = require('./bot/handlers/obedienceHandler.cjs')
+import dotenv from 'dotenv'
+dotenv.config()
+
+import TelegramBot from 'node-telegram-bot-api'
+import { routeCommand } from './bot/commandRouter.js'
+import { handleObedience } from './bot/handlers/obedienceHandler.js'
 
 // Create the Telegram bot instance
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true })
@@ -14,17 +16,15 @@ bot.on('message', async (msg) => {
 
   if (!text) return
 
-  // Check if it's a known command first
   if (text.startsWith('/')) {
     await routeCommand(bot, msg)
     return
   }
 
-  // Otherwise assume it's a ritual response (OBEY, NEGOTIATE, DEFY)
   await handleObedience(bot, msg)
 })
 
-// Error handling for polling
+// Handle polling errors
 bot.on('polling_error', (error) => {
   console.error('Polling error:', error.code, error.message)
 })

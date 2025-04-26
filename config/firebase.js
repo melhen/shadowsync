@@ -1,19 +1,23 @@
 // config/firebase.js
-import { initializeApp, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-import { getAuth } from 'firebase-admin/auth';
-import { readFileSync } from 'fs';
 
-// Read service account key manually
-const serviceAccount = JSON.parse(
-  readFileSync(new URL('../serviceAccountKey.json', import.meta.url))
-);
+import { initializeApp, cert, getApps } from 'firebase-admin/app'
+import { getFirestore } from 'firebase-admin/firestore'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-initializeApp({
-  credential: cert(serviceAccount),
-});
+// Resolve __dirname manually in ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-const db = getFirestore();
-const auth = getAuth();
+// Load the service account JSON manually
+const serviceAccountPath = path.resolve(__dirname, 'serviceAccountKey.json')
+const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'))
 
-export { db, auth };
+if (!getApps().length) {
+  initializeApp({
+    credential: cert(serviceAccount),
+  })
+}
+
+export const db = getFirestore()

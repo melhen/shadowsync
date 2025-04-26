@@ -1,13 +1,14 @@
 // services/ai/shadowPersonaEngine.js
-import OpenAI from 'openai'
+
 import { db } from '../../config/firebase.js'
 import { SHADOW_ARCHETYPES } from './archetypeConfig.js'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+import OpenAI from 'openai'
 
 export async function generateRitualForUser(userId) {
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+
   const userRef = db.collection('users').doc(userId)
   const shadowRef = userRef.collection('shadow').doc('state')
   const trophiesSnap = await userRef.collection('trophies').get()
@@ -20,11 +21,9 @@ export async function generateRitualForUser(userId) {
   const user = userSnap.data() || {}
   const trophies = trophiesSnap.docs.map((doc) => doc.id)
 
-  // 🧠 Choose Shadow Archetype
   const archetypeId = user.shadowPersonaId || 'Null'
   const persona = SHADOW_ARCHETYPES[archetypeId]
 
-  // 💡 Style flavoring
   const styleOptions = [
     'ritualistic',
     'poetic',

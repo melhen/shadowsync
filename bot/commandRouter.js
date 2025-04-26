@@ -1,10 +1,10 @@
 // bot/commandRouter.js
 
-const { handleStart } = require('./handlers/startHandler')
-const { handleRitual } = require('./handlers/ritualHandler')
-const { handleTrophy } = require('./handlers/trophyHandler')
-const { handleContainment } = require('./handlers/containmentHandler')
-const { handleUnknownCommand } = require('./handlers/unknownCommandHandler')
+import { handleStart } from './handlers/startHandler.js'
+import { handleRitual } from './handlers/ritualHandler.js'
+import { handleTrophy } from './handlers/trophyHandler.js'
+import { handleContainment } from './handlers/containmentHandler.js'
+import { handleUnknownCommand } from './handlers/unknownCommandHandler.js'
 
 const commandRouter = {
   '/start': handleStart,
@@ -13,12 +13,8 @@ const commandRouter = {
   '/containment': handleContainment,
 }
 
-function routeCommand(bot, msg) {
+export function routeCommand(bot, msg) {
   const text = msg.text ? msg.text.trim().split(' ')[0] : ''
   const handler = commandRouter[text] || handleUnknownCommand
   return handler(bot, msg)
-}
-
-module.exports = {
-  routeCommand,
 }
