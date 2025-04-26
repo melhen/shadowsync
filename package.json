@@ -15,5 +15,9 @@
     "firebase-admin": "^13.3.0",
     "node-telegram-bot-api": "^0.66.0",
     "openai": "^4.96.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.25.1",
+    "prettier": "^3.5.3"
   }
 }
