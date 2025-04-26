@@ -17,13 +17,30 @@ bot.on('message', async (msg) => {
 
   if (!text) return
 
-  // Known /commands routing
-  if (text.startsWith('/')) {
-    await routeCommand(bot, msg)
+  // If user sends /start, show WebApp summon button
+  if (text.startsWith('/start')) {
+    await bot.sendMessage(
+      msg.chat.id,
+      '🕯️ Welcome to ShadowSync.\n\nSummon the altar:',
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: '🕯️ Enter Sacred Altar',
+                web_app: {
+                  url: 'https://shadowsync-melody-hazes-projects.vercel.app/',
+                },
+              },
+            ],
+          ],
+        },
+      },
+    )
     return
   }
 
-  // ✨ Ritual initiation flow
+  // Ritual initiation flow
   if (text === 'Begin Ritual') {
     const { handleRitual } = await import('./bot/handlers/ritualHandler.js')
     await handleRitual(bot, msg)
