@@ -1,0 +1,47 @@
+export const ritualCatalog = [
+        {
+          id: 'ritual_stillness',
+          title: 'Submit to Stillness',
+          prompt: 'Breathe in for 4. Hold for 4. Exhale for 4. Repeat. Do not move for 3 minutes.',
+          module: 'MODULE://HAVEN',
+          tier: 'free',
+          runtimeTags: ['RUNTIME://PARASYMPATHETIC'],
+        },
+        {
+          id: 'ritual_discipline',
+          title: 'The Path of Discipline',
+          prompt: 'You are to remain silent for one hour. No replies. No posting. No escape.',
+          module: 'MODULE://COMMAND_LINE',
+          tier: 'free',
+          requiredTrophies: ['trophy_obey_3'],
+          requiredStreak: 3,
+          runtimeTags: ['RUNTIME://FOCUSED'],
+        },
+        {
+          id: 'ritual_defiance_test',
+          title: 'The Mirror Test',
+          prompt: 'Stand before a mirror. Speak aloud your last act of resistance. Whisper it three times.',
+          module: 'MODULE://ORACLE',
+          tier: 'free',
+          requiredTrophies: ['trophy_defy_3'],
+          runtimeTags: ['RUNTIME://REFLECTIVE'],
+        },
+        {
+          id: 'ritual_submission_oath',
+          title: 'The Oath of Obedience',
+          prompt: 'Write out the phrase “I choose obedience.” ten times, by hand. Send a photo as proof.',
+          module: 'MODULE://BEACON',
+          tier: 'free',
+          requiredTrophies: ['trophy_obey_3'],
+          requiredStreak: 5,
+        },
+        {
+          id: 'ritual_unlock_bonus',
+          title: 'The Whispered Access Key',
+          prompt: 'Your next ritual will not appear unless you whisper a secret. Reply with something true.',
+          module: 'MODULE://BLACK_BOX',
+          tier: 'free',
+          requiredTrophies: ['trophy_first_ritual'],
+        },
+      ];
+  
