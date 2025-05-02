@@ -43,6 +43,7 @@ All Firebase credentials must be injected via ENV vars (no filesystem reads).
 1. Clone repo
 2. Install dependencies: `npm install`
 3. Set environment variables (see above)
+
 4. Start the bot locally: `npm run start`
 5. For production deploy: push to Railway, auto-deploy triggers.
 
